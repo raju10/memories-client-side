@@ -19,9 +19,12 @@ function App() {
             <Route exact path="/">
               <Home></Home>
             </Route>
-            <PrivateRoute path="/memories">
+            <Route path="/home">
+              <Home></Home>
+            </Route>
+            <Route path="/memories">
               <Memories></Memories>
-            </PrivateRoute>
+            </Route>
             <Route path="/login">
               <Login></Login>
             </Route>

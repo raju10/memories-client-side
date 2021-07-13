@@ -1,0 +1,14 @@
+.login-btn {
+  padding: 4px 18px;
+  background-color: #0d84b3;
+  border: none;
+  border-radius: 5px;
+  color: white;
+}
+.logout-btn {
+  padding: 4px 16px;
+  background-color: brown;
+  border: none;
+  border-radius: 5px;
+  color: white;
+}
