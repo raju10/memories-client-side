@@ -8,26 +8,22 @@ import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Collapse from "@material-ui/core/Collapse";
-import TextField from "@material-ui/core/TextField";
+
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { red } from "@material-ui/core/colors";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import MessageIcon from "@material-ui/icons/Message";
-import ShareIcon from "@material-ui/icons/Share";
+
 import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { UserClientInfoContext, UserContext } from "../../../App";
-import CreatingMemories from "../CreatingMemories/CreatingMemories";
-import { Update } from "@material-ui/icons";
-import Updates from "../Updates/Updates";
+import { UserContext } from "../../../App";
+
 import UpdateIcon from "@material-ui/icons/Update";
-import ClearIcon from "@material-ui/icons/Clear";
+
 import CloseIcon from "@material-ui/icons/Close";
 import "./MemoriesDetls.css";
 ////
@@ -53,45 +49,31 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: red[500],
   },
 }));
-
+//////
 const MemoriesDetls = ({ myMemories, openModal, loadPost, updates }) => {
-  ///////////////
-  console.log(updates);
-  //////////////
-  const [clientInfo, setClientInfo] = useContext(UserClientInfoContext);
-  const [loginUser, setLoginUser] = useContext(UserContext);
+  // material ui
+  const classes = useStyles();
+  const [expanded, setExpanded] = React.useState(false);
 
-  //const [datass, setDatas] = useState({});
-  console.log("datassss", clientInfo);
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+  ////
+  const [loginUser, setLoginUser] = useContext(UserContext);
+  // comment part open//
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => {
-    // setClientInfo({
-    //   data: data,
-    //   loginUser: loginUser,
-    // });
-    // console.log("comment", clientInfo);
-    // fetch("http://localhost:1000/addPosts", {
-    //   method: "POST",
-    //   body: JSON.stringify(clientInfo),
-
-    //   headers: {
-    //     "Content-type": "application/json; charset=UTF-8",
-    //   },
-    // })
-    //   .then((response) => response.json())
-    //   .then((json) => console.log(json));
-    /////
     const id = updates._id;
     const datas = {
       comments: data.comments,
       id: id,
     };
     console.log(datas);
-    fetch(`http://localhost:1000/updatess/${id}`, {
+    fetch(`http://localhost:1000/comments/${id}`, {
       method: "PATCH",
       body: JSON.stringify(datas),
       headers: {
@@ -100,21 +82,9 @@ const MemoriesDetls = ({ myMemories, openModal, loadPost, updates }) => {
     })
       .then((res) => res.json())
       .then((json) => console.log(json));
-    ///
   };
-  /////
-  const [userInfo, setUserInfo] = useState([]);
-  console.log("userInfo", userInfo);
-  // useEffect(() => {
-  //   fetch("http://localhost:1000/allUserInfo")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //       setUserInfo(data);
-  //     });
-  // }, []);
-
-  ///delete///
+  // comment part close//
+  ///delete part open///
   const handelPostDelete = (id) => {
     console.log(id);
     if (window.confirm("Are you sure you wan't to delete this post")) {
@@ -130,28 +100,19 @@ const MemoriesDetls = ({ myMemories, openModal, loadPost, updates }) => {
         });
     }
   };
-  /////
-  const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
+  // delete part close //
   /////////update/////////////
-
+  // Inside the Memories folder
   /////////////////////
   return (
     <div
       className="col-sm-6 col-md-12 col-lg-6 col-xl-4"
       style={{
         display: "flex",
-        // alignItems: "center",
+
         justifyContent: "center",
       }}
     >
-      {/* <div style={{ display: "none" }}>
-        <CreatingMemories datass={datass}></CreatingMemories>
-      </div> */}
       <Card
         className={classes.root}
         style={{ margin: "20px 0px" }}
@@ -168,10 +129,11 @@ const MemoriesDetls = ({ myMemories, openModal, loadPost, updates }) => {
             </Avatar>
           }
           action={
+            // same delete part open
             <IconButton aria-label="settings">
-              {/* <MoreVertIcon /> */}
               <CloseIcon onClick={() => handelPostDelete(myMemories._id)} />
             </IconButton>
+            // delete part close
           }
           title={myMemories.creator}
           subheader={myMemories.date}
@@ -179,7 +141,7 @@ const MemoriesDetls = ({ myMemories, openModal, loadPost, updates }) => {
         <CardMedia
           className={classes.media}
           image={myMemories.image}
-          title="Paella dish"
+          title={myMemories.title}
         />
 
         <Typography
@@ -195,7 +157,6 @@ const MemoriesDetls = ({ myMemories, openModal, loadPost, updates }) => {
         >
           {myMemories.tags}
         </Typography>
-        {/* title */}
 
         <Typography
           variant=""
@@ -212,7 +173,6 @@ const MemoriesDetls = ({ myMemories, openModal, loadPost, updates }) => {
           {myMemories.title}
         </Typography>
 
-        {/* close */}
         <CardContent>
           <Typography variant="body2" color="textSecondary" component="p">
             {myMemories.message}
@@ -222,15 +182,18 @@ const MemoriesDetls = ({ myMemories, openModal, loadPost, updates }) => {
           <IconButton aria-label="add to favorites">
             <FavoriteIcon />
           </IconButton>
-          {/* */}
+          {/* updated part open*/}
           <IconButton aria-label="" onClick={openModal}>
             <UpdateIcon onClick={() => loadPost(myMemories._id)} />
           </IconButton>
+          {/* updated part close */}
+          {/* delete part open*/}
           <IconButton aria-label="share">
             <DeleteIcon onClick={() => handelPostDelete(myMemories._id)} />
           </IconButton>
 
-          {/*  */}
+          {/* delete part close */}
+          {/* comments part open */}
           <IconButton
             className={clsx(classes.expand, {
               [classes.expandOpen]: expanded,
@@ -241,32 +204,9 @@ const MemoriesDetls = ({ myMemories, openModal, loadPost, updates }) => {
           >
             <MessageIcon onClick={() => loadPost(myMemories._id)} />
           </IconButton>
-          {/*  */}
-
-          {/* <IconButton
-            className={clsx(classes.expand, {
-              [classes.expandOpen]: expanded,
-            })}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-          >
-            <ExpandMoreIcon />
-          </IconButton> */}
         </CardActions>
 
         <Collapse in={expanded} timeout="auto" unmountOnExit>
-          {/* <form
-            className={classes.root}
-            noValidate
-            autoComplete="off"
-            onSubmit={handleSubmit(onSubmit)}
-            style={{ marginLeft: "10px" }}
-          >
-            <TextField id="standard-basic" label="Add on Your Comments" />
-        
-              <input type="submit" className="buttons" />
-          </form> */}
           <form
             onSubmit={handleSubmit(onSubmit)}
             style={{ padding: "0px 7px" }}
@@ -288,32 +228,13 @@ const MemoriesDetls = ({ myMemories, openModal, loadPost, updates }) => {
               </span>
             )}
           </form>
-
+          {/*  comments part close */}
           <CardContent>
             <Typography>Hellow </Typography>
             <Typography paragraph>{myMemories.message}</Typography>
           </CardContent>
         </Collapse>
       </Card>
-
-      {/* <div id="update">
-        <input
-          type="text"
-          value={data}
-          onChange={(e) => setUpdates(e.target.value)}
-        />
-      </div>*/}
-      {/* <div>
-        <iframe
-          width="560"
-          height="315"
-          src={myMemories.tags}
-          title="YouTube video player"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-        ></iframe>
-      </div> */}
     </div>
   );
 };

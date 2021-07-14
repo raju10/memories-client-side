@@ -26,11 +26,6 @@ const Headers = () => {
                 Logout - {loginUser.loginUserName}
               </button>
             </Link>
-            {/* <img
-              src={loginUser.loginUserPhoto}
-              alt=""
-              style={{ width: "30px", borderRadius: "100%", marginLeft: "1%" }}
-            /> */}
           </>
         ) : (
           <Link to="/login">

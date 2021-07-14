@@ -3,16 +3,10 @@ import { useForm } from "react-hook-form";
 import { Input } from "@material-ui/core";
 import "./CreatingMemories.css";
 import axios from "axios";
-import {
-  UserClientInfoContext,
-  UserCommentContext,
-  UserContext,
-} from "../../../App";
+import { UserContext } from "../../../App";
 import { Link } from "react-router-dom";
 
 const CreatingMemories = () => {
-  // const [clientInfo, setClientInfo] = useContext(UserClientInfoContext);
-  // console.log("clientInfo", clientInfo);
   const [loginUser, setLoginUser] = useContext(UserContext);
   const [imgUrl, setImgUrl] = useState(null);
   console.log("imgUrl", imgUrl);
@@ -26,8 +20,6 @@ const CreatingMemories = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
-
     const datas = {
       creator: data.creator,
       title: data.title,
@@ -39,11 +31,7 @@ const CreatingMemories = () => {
 
       Comment: {},
     };
-    // const datass = {
-    //   datass: datass,
-    // };
-    // console.log("datass", datass);
-    // setPost(datas);
+
     console.log("datas", datas);
     fetch("http://localhost:1000/addPost", {
       method: "POST",
@@ -57,7 +45,7 @@ const CreatingMemories = () => {
       .then((json) => console.log(json));
   };
   ////////////close/////////////
-  ///img upload functions////
+  ///img upload functions open////
   const handelImgUpload = (e) => {
     console.log(e.target.files[0]);
     const imgData = new FormData();
@@ -74,11 +62,12 @@ const CreatingMemories = () => {
         console.log(error);
       });
   };
-  ///close//
+  ///img upload functions close//
 
   return (
     <div className="creating-memories-container">
       {loginUser.loginUserEmail ? (
+        //creating post from open///
         <form onSubmit={handleSubmit(onSubmit)}>
           <input
             {...register("creator", { required: true })}
@@ -124,6 +113,7 @@ const CreatingMemories = () => {
           <input type="submit" className="login-btn" />
         </form>
       ) : (
+        ///close//
         <div>
           <p>You have not created an account yet, Please</p>
           <Link to="/login">

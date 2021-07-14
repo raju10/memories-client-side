@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import MemoriesDetls from "../MemoriesDetls/MemoriesDetls";
 import CreatingMemories from "../CreatingMemories/CreatingMemories";
 import UpdatedModal from "../UpdatedModal/UpdatedModal";
-import Neww from "../Neww";
+
 import Headers from "../Headers/Headers";
 import "./Memories.css";
 const Memories = () => {
@@ -12,25 +12,19 @@ const Memories = () => {
     fetch("http://localhost:1000/allPost")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setMyMemories(data);
       });
   }, []);
-  //updated///
+  //updated part///
   const [updates, setUpdates] = useState({});
 
   const loadPost = (id) => {
-    console.log(id);
+    // console.log(id);
     let url = `http://localhost:1000/postes/${id}`;
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
         console.log("updated successfully", data);
-        // const updated = document.getElementById("update");
-        // updated.innerHTML = `
-        //   <h3>Updated : ${data._id}</h3>
-        //   <input type="text" value="${data.title}"/>
-        //   `;
         setUpdates(data);
       })
       .then((success) => {
@@ -40,8 +34,8 @@ const Memories = () => {
         }
       });
   };
-
-  ////modal//
+  // updated part close//
+  ////modal part//
 
   const [modalIsOpen, setIsOpen] = useState(false);
   function openModal() {
@@ -51,7 +45,7 @@ const Memories = () => {
   function closeModal() {
     setIsOpen(false);
   }
-  //close//
+  //modal part close//
 
   return (
     <section className="memories-container">
@@ -81,9 +75,6 @@ const Memories = () => {
           modalIsOpen={modalIsOpen}
           closeModal={closeModal}
         ></UpdatedModal>
-        {/* <div>
-        <Neww></Neww>
-      </div> */}
       </div>
     </section>
   );

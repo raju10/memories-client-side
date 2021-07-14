@@ -31,7 +31,6 @@ const UpdatedModal = ({ modalIsOpen, closeModal, updates }) => {
     setMessage(updates.message);
   }, []);
 
-  console.log(updates);
   const {
     register,
     handleSubmit,
@@ -61,9 +60,7 @@ const UpdatedModal = ({ modalIsOpen, closeModal, updates }) => {
       .then((res) => res.json())
       .then((json) => console.log(json));
   };
-  ////////handelPostUpdated ///
 
-  ///close///
   return (
     <section>
       {/* modal open tag*/}
