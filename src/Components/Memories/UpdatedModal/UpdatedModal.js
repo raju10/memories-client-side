@@ -13,13 +13,13 @@ const customStyles = {
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
-    width: "80%",
+    width: "90%",
   },
 };
 
 Modal.setAppElement("#root");
 ////close///
-const UpdatedModal = ({ modalIsOpen, closeModal, updates }) => {
+const UpdatedModal = ({ modalIsOpen, closeModal, updates, onSubmit }) => {
   const [creators, setCreators] = useState("");
   const [titles, setTitles] = useState("");
   const [tag, setTag] = useState("");
@@ -37,29 +37,6 @@ const UpdatedModal = ({ modalIsOpen, closeModal, updates }) => {
     watch,
     formState: { errors },
   } = useForm();
-
-  const onSubmit = (data) => {
-    console.log(data);
-    const id = updates._id;
-    const datas = {
-      creator: data.creator,
-      title: data.title,
-      message: data.message,
-      tags: data.tags,
-
-      id: id,
-    };
-    console.log(datas);
-    fetch(`http://localhost:1000/update/${id}`, {
-      method: "PATCH",
-      body: JSON.stringify(datas),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    })
-      .then((res) => res.json())
-      .then((json) => console.log(json));
-  };
 
   return (
     <section>

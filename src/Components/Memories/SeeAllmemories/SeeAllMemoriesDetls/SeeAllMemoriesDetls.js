@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
@@ -20,13 +20,12 @@ import DeleteIcon from "@material-ui/icons/Delete";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { UserContext } from "../../../App";
 
 import UpdateIcon from "@material-ui/icons/Update";
 
 import CloseIcon from "@material-ui/icons/Close";
-import "./MemoriesDetls.css";
-import Swal from "sweetalert2";
+import { UserContext } from "../../../../App";
+
 ////
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,59 +50,38 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 //////
-const MemoriesDetls = ({
-  myMemories,
-  openModal,
+
+const SeeAllMemoriesDetls = ({
   loadPost,
+  openModal,
   updates,
+  seeAllMemories,
   onSubmit,
-  cart,
   handelPostDelete,
 }) => {
-  // console.log("myMemories", myMemories);
-  // material ui
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  // material ui open//
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  ////
+  //material ui close//
+
   const [loginUser, setLoginUser] = useContext(UserContext);
-  // // comment part open//
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  // // comment part close//
-
-  const handelCommentDelete = (id) => {
-    console.log(id);
-    if (window.confirm("Are you sure you wan't to delete this post")) {
-      fetch("http://localhost:1000/deletes/" + id, {
-        method: "DELETE",
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log("deleted successfully", data);
-        });
-    }
-  };
-  /////////update/////////////
-  // Inside the Memories folder
-  /////////////////////
   return (
     <div
-      className="col-sm-6 col-md-12 col-lg-6 col-xl-4"
+      className="col-sm-6 col-md-4 col-lg-3 col-xl-3 "
       style={{
         display: "flex",
 
         justifyContent: "center",
+        marginTop: "3%",
       }}
     >
       <Card
@@ -115,7 +93,7 @@ const MemoriesDetls = ({
           avatar={
             <Avatar aria-label="recipe" className={classes.avatar}>
               <img
-                src={myMemories.loginUser.loginUserPhoto}
+                src={seeAllMemories.loginUser.loginUserPhoto}
                 alt=""
                 style={{ width: "50px" }}
               />
@@ -124,17 +102,17 @@ const MemoriesDetls = ({
           action={
             // same delete part open
             <IconButton aria-label="settings">
-              <CloseIcon onClick={() => handelPostDelete(myMemories._id)} />
+              {/* <CloseIcon onClick={() => handelPostDelete(seeAllMemories._id)} /> */}
             </IconButton>
             // delete part close
           }
-          title={myMemories.creator}
-          subheader={myMemories.date}
+          title={seeAllMemories.creator}
+          subheader={seeAllMemories.date}
         />
         <CardMedia
           className={classes.media}
-          image={myMemories.image}
-          title={myMemories.title}
+          image={seeAllMemories.image}
+          title={seeAllMemories.title}
         />
 
         <Typography
@@ -148,7 +126,7 @@ const MemoriesDetls = ({
             paddingLeft: "5%",
           }}
         >
-          {myMemories.tags}
+          {seeAllMemories.tags}
         </Typography>
 
         <Typography
@@ -163,26 +141,34 @@ const MemoriesDetls = ({
             color: "#111",
           }}
         >
-          {myMemories.title}
+          {seeAllMemories.title}
         </Typography>
 
         <CardContent>
           <Typography variant="body2" color="textSecondary" component="p">
-            {myMemories.message}
+            {seeAllMemories.message}
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
           <IconButton aria-label="add to favorites">
-            <FavoriteIcon onClick={() => loadPost(myMemories._id)} />
+            <FavoriteIcon />
           </IconButton>
           {/* updated part open*/}
           <IconButton aria-label="" onClick={openModal}>
-            <UpdateIcon onClick={() => loadPost(myMemories._id)} />
+            {loginUser.loginUserEmail ===
+              seeAllMemories.loginUser.loginUserEmail && (
+              <UpdateIcon onClick={() => updates(seeAllMemories._id)} />
+            )}
           </IconButton>
           {/* updated part close */}
           {/* delete part open*/}
           <IconButton aria-label="share">
-            <DeleteIcon onClick={() => handelPostDelete(myMemories._id)} />
+            {loginUser.loginUserEmail ===
+              seeAllMemories.loginUser.loginUserEmail && (
+              <DeleteIcon
+                onClick={() => handelPostDelete(seeAllMemories._id)}
+              />
+            )}
           </IconButton>
 
           {/* delete part close */}
@@ -208,7 +194,7 @@ const MemoriesDetls = ({
 
             <div style={{ display: "flex" }}>
               <input
-                onClick={() => loadPost(myMemories._id)}
+                onClick={() => loadPost(seeAllMemories._id)}
                 {...register("comments", { required: true })}
                 placeholder="Add on Your Comments"
                 className="form-control"
@@ -224,7 +210,7 @@ const MemoriesDetls = ({
           </form>
           {/*  comments part close */}
           <CardContent>
-            {myMemories.Comment.map((comment) => (
+            {seeAllMemories.Comment.map((comment) => (
               <div
                 style={{ borderBottom: "1px solid #80808085", padding: "2% 0" }}
               >
@@ -252,4 +238,4 @@ const MemoriesDetls = ({
   );
 };
 
-export default MemoriesDetls;
+export default SeeAllMemoriesDetls;

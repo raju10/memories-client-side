@@ -11,4 +11,13 @@
   margin-top: 20px;
   background-color: white;
   border-radius: 5px;
+  position: fixed;
+}
+@media (max-width: 767px) {
+  .rajuu {
+    display: none;
+  }
+  .login-logout-btn {
+    display: none;
+  }
 }

@@ -5,6 +5,8 @@ import Memories from "./Components/Memories/Memories/Memories";
 import Home from "./Components/Home/Home";
 import Login from "./Components/Login/Login/Login";
 import PrivateRoute from "./Components/Login/Login/PrivateRoute/PrivateRoute";
+import SideNavbar from "./Components/SideNavbar/SideNavbar";
+import SeeAllmemories from "./Components/Memories/SeeAllmemories/SeeAllmemories";
 
 export const UserContext = createContext();
 export const UserClientInfoContext = createContext();
@@ -27,6 +29,12 @@ function App() {
           <Route path="/login">
             <Login></Login>
           </Route>
+          <Route path="/sideNav">
+            <SideNavbar></SideNavbar>
+          </Route>
+          <PrivateRoute path="/seeAllMemories">
+            <SeeAllmemories></SeeAllmemories>
+          </PrivateRoute>
         </Switch>
       </Router>
     </UserContext.Provider>

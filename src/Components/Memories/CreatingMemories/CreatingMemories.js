@@ -5,11 +5,9 @@ import "./CreatingMemories.css";
 import axios from "axios";
 import { UserContext } from "../../../App";
 import { Link } from "react-router-dom";
-
-const CreatingMemories = () => {
+import Swal from "sweetalert2";
+const CreatingMemories = ({ cart }) => {
   const [loginUser, setLoginUser] = useContext(UserContext);
-  const [imgUrl, setImgUrl] = useState(null);
-  console.log("imgUrl", imgUrl);
 
   ///react hoock from open///
   const {
@@ -19,6 +17,11 @@ const CreatingMemories = () => {
     formState: { errors },
   } = useForm();
 
+  ////////////close/////////////
+  // creating post
+  const [imgUrl, setImgUrl] = useState(null);
+  console.log("imgUrl", imgUrl);
+
   const onSubmit = (data) => {
     const datas = {
       creator: data.creator,
@@ -27,12 +30,15 @@ const CreatingMemories = () => {
       tags: data.tags,
       image: imgUrl,
       loginUser: loginUser,
+      loginUserEmail: loginUser.loginUserEmail,
       date: new Date().toDateString(),
 
-      Comment: {},
+      Comment: [],
+      like: [],
     };
 
     console.log("datas", datas);
+
     fetch("http://localhost:1000/addPost", {
       method: "POST",
       body: JSON.stringify(datas),
@@ -42,9 +48,13 @@ const CreatingMemories = () => {
       },
     })
       .then((response) => response.json())
-      .then((json) => console.log(json));
+      .then((data) => {
+        console.log("dataaa", data.data);
+        if (data) {
+          Swal.fire("Post creating succesfully", "Thnq", "success");
+        }
+      });
   };
-  ////////////close/////////////
   ///img upload functions open////
   const handelImgUpload = (e) => {
     console.log(e.target.files[0]);
@@ -63,55 +73,69 @@ const CreatingMemories = () => {
       });
   };
   ///img upload functions close//
-
+  // creating post close
+  const handelChange = (e) => {
+    console.log(e.target.value);
+  };
   return (
-    <div className="creating-memories-container">
+    <div className="creating-memories-container " style={{ marginTop: "4%" }}>
       {loginUser.loginUserEmail ? (
         //creating post from open///
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <input
-            {...register("creator", { required: true })}
-            defaultValue={loginUser.loginUserName}
-            placeholder="Creator"
-            className="form-control"
-          />
+        <>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <h5
+              style={{
+                textAlign: "center",
+                paddingBottom: "1%",
+              }}
+            >
+              Creating a Memory
+            </h5>
+            <input
+              {...register("creator", { required: true })}
+              defaultValue={loginUser.loginUserName}
+              placeholder="Creator"
+              className="form-control"
+            />
 
-          {errors.creator && <span>This field is required</span>}
-          <br />
-          <input
-            {...register("title", { required: true })}
-            placeholder="Title"
-            className="form-control"
-          />
+            {errors.creator && <span>This field is required</span>}
+            <br />
+            <input
+              {...register("title", { required: true })}
+              placeholder="Title"
+              className="form-control"
+            />
 
-          {errors.title && <span>This field is required</span>}
-          <br />
-          <textarea
-            {...register("message", { required: true })}
-            placeholder="Message"
-            className="form-control"
-          />
+            {errors.title && <span>This field is required</span>}
+            <br />
+            <textarea
+              {...register("message", { required: true })}
+              placeholder="Message"
+              className="form-control"
+            />
 
-          {errors.message && <span>This field is required</span>}
-          <br />
-          <input
-            {...register("tags", { required: true })}
-            placeholder="Tags"
-            className="form-control"
-          />
+            {errors.message && <span>This field is required</span>}
+            <br />
+            <input
+              {...register("tags", { required: true })}
+              placeholder="Tags"
+              className="form-control"
+              onBlur={(e) => handelChange(e)}
+            />
 
-          {errors.tags && <span>This field is required</span>}
-          <br />
-          <input
-            type="file"
-            onChange={handelImgUpload}
-            // {...register("image", { required: true })}
-            className="form-control"
-          />
-          {/* {errors.image && <span>Image is required</span>} */}
-          <br />
-          <input type="submit" className="login-btn" />
-        </form>
+            {errors.tags && <span>This field is required</span>}
+            <br />
+            <input
+              type="file"
+              onChange={handelImgUpload}
+              // {...register("image", { required: true })}
+              className="form-control"
+            />
+            {/* {errors.image && <span>Image is required</span>} */}
+            <br />
+            <input type="submit" className="login-btn" />
+          </form>
+        </>
       ) : (
         ///close//
         <div>

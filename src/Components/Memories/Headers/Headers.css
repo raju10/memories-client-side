@@ -12,10 +12,19 @@
 
   z-index: 1;
 }
-.header-container h2 {
+#memories-title {
   color: #00b7ff;
   font-size: 23px;
   font-weight: 500;
-  padding: 0px 10%;
+  padding: 0px 5%;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+@media (max-width: 400px) {
+  #memories-title {
+    font-size: 17px;
+  }
+}
+#yoo:hover {
+  border-bottom: 1px solid #00b7ff;
 }
